@@ -1,10 +1,9 @@
-
 import random
 
 total_rounds = 0
 
 class GameEntity:
-    def __init__(self, name, health, damage):
+    def __init__(self, name, health, damage) -> None:
         self.__name = name
         self.__health = health
         self.__damage = damage
@@ -12,34 +11,34 @@ class GameEntity:
     @property
     def name(self):
         return self.__name
-
+    
     @property
     def health(self):
         return self.__health
-    
+
     @health.setter
-    def health(self, new_health):
-        if new_health < 0:
+    def health(self, value):
+        if value < 0:
             self.__health = 0
         else:
-            self.__health = new_health
+            self.__health = value
 
     @property
     def damage(self):
         return self.__damage
-    
-    @damage.setter
-    def damage(self, new_damage):
-        self.__damage = new_damage
 
+    @damage.setter
+    def damage(self, value):
+        self.__damage = value
+    
     def __str__(self) -> str:
-        return f"Name: {self.name}\nHealth: {self.health}\nDamage: {self.damage}\n"
+        return f'{self.name} health: {self.health} [{self.damage}]'
     
 
 class Boss(GameEntity):
-    def __init__(self, name, health, damage):
+    def __init__(self, name, health, damage) -> None:
         super().__init__(name, health, damage)
-
+    
     def hit(self, heroes: list):
         for hero in heroes:
             if hero.health > 0 and self.health > 0:
@@ -47,8 +46,6 @@ class Boss(GameEntity):
 
     def __str__(self) -> str:
         return "BOSS " + super().__str__()
-    
-
 
 class Hero(GameEntity):
     def __init__(self, name, health, damage, super_ability) -> None:
@@ -71,31 +68,47 @@ class Hero(GameEntity):
         pass
 
 
-class Warrior(Hero):
-    def __init__(self, name, health, damage):
-        super().__init__(name, health, damage, "Critical Damage ")
+class Warior(Hero):
+    def __init__(self, name, health, damage) -> None:
+        super().__init__(name, health, damage, "CRITICAL DAMAGE")
+    
 
     def apply_super_power(self, boss: Boss, heroes: list):
-        coef = random.randint(0, 4)
+        coef = random.randint(0, 5)
         boss.health -= self.damage * coef
-        print(f"Warrior {self.name} hits criticaly: {self.damage * coef}\n")
+        print(f"Warrior {self.name} hits criticaly: {self.damage * coef}")
 
 
-def print_stat(boss: Boss, heroes):
-    print(f"______{total_rounds} Round______\n")
-    print(boss)
+class Medic(Hero):
+    def __init__(self, name, health, damage, heal_point) -> None:
+        super().__init__(name, health, damage, "HEAL")
+        self.__heal_point = heal_point
 
-    for hero in heroes:
-        print(hero)
+    def apply_super_power(self, boss: Boss, heroes: list):
+        print(f"Medic: {self.name} heal {self.__heal_point}")
+        for hero in heroes:
+            if hero.health > 0 and hero != self:
+                hero.health += self.__heal_point
+
+
+class Mag(Hero):
+    def __init__(self, name, health, damage) -> None:
+        super().__init__(name, health, damage, "BOOST")
+
+    def apply_super_power(self, boss: Boss, heroes: list):
+        boost_point = random.choice([5, 10, 15])
+        print(f"Mag: {self.name} boost {boost_point}")
+        for hero in heroes:
+            if hero.health > 0 and hero != self:
+                hero.damage += boost_point
 
 
 def is_game_finished(boss: Boss, heroes):
-    if boss.health == 0:
+    if boss.health <= 0:
         print("Heroes WON!")
         return True
 
     all_heroes_dead = True
-    
     for hero in heroes:
         if hero.health > 0:
             all_heroes_dead = False
@@ -104,10 +117,17 @@ def is_game_finished(boss: Boss, heroes):
         print("Boss WON!")
 
     return all_heroes_dead
+    
+
+def print_statistic(boss: Boss, heroes):
+    print(f"___________{total_rounds} Round___________")
+    print(boss)
+    for hero in heroes:
+        print(hero)
 
 
 def heroes_power(boss: Boss, heroes: list):
-    boss_ability =(["CRITICAL DAMAGE"])
+    boss_ability = random.choice(["CRITICAL DAMAGE", "HEAL", "BOOST"])
     print(f"Boss {boss.name} blocked {boss_ability}")
     for hero in heroes:
         if boss_ability != hero.super_ability and boss.health > 0 and hero.health > 0:
@@ -115,24 +135,30 @@ def heroes_power(boss: Boss, heroes: list):
 
 
 def play_round(boss: Boss, heroes: list):
+    print_statistic(boss, heroes)
     global total_rounds
     total_rounds += 1
-
     boss.hit(heroes)
-
     for hero in heroes:
         hero.hit(boss)
     heroes_power(boss, heroes)
 
 
 
+
 def main():
-    boss = Boss("Paimon", 9090, 200)
-    warior = Warrior("Kaveh", 5579, 150)
-    heroes = [warior]
-    
+    boss = Boss("Nurbolot", 2000, 50)
+
+    warrior = Warior("Ashat", 260, 10)
+    warrior_2 = Warior("Kurmanbek", 290, 20)
+    medic = Medic("Islam", 220, 5, 15)
+    medic_asistent = Medic("Janysh", 240, 10, 5)
+    magic = Mag("Magomed", 290, 20)
+
+    heroes = [warrior, medic, medic_asistent, magic, warrior_2]
 
     while not is_game_finished(boss, heroes):
         play_round(boss, heroes)
-        print_stat(boss, heroes)
+    
+    print_statistic(boss, heroes)
 main()
