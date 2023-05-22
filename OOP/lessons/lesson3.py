@@ -138,5 +138,5 @@ prius = HybridCar("Toyota Prius", 2015, fuel_bank=20, battery=800)
 # supra.drive()
 # prius.drive()
 
-# print(HybridCar.__mro__)
-# print(HybridCar.mro())
+# print(HybridCar.__mro__)   # в виде кортежа
+# print(HybridCar.mro())   # в виде списка
