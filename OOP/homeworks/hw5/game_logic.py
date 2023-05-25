@@ -13,17 +13,18 @@ def play_game():
             print(f"Извините у вас не хватает средств на ставку. Попробуйте еще раз\n")
             continue
 
-        winning_number = random.choice(nums)
+        win_number = random.choice(nums)
         select_number = int(input("Выбирайте номера с 1 по 30: "))
+        
         if select_number > 30:
             print(f"Э брат больше 30 чисел нет. Заново давай\n")
             continue
 
-        if bet > my_money:
+        elif bet > my_money:
             print("Извините у вас не хватает средств на ставку. Попробуйте еще раз")
             continue
 
-        if select_number == winning_number:
+        elif select_number == win_number:
             my_money += bet * 2
             print(f"Поздравляю!Вы выиграли!")
         else:
