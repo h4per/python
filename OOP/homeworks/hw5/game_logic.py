@@ -35,3 +35,5 @@ def play_game():
         if choice != "да":
             break
         print(f"Игра продолжается. Ваш баланс {my_money}\n")
+
+play_game()
