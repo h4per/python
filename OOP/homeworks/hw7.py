@@ -1,5 +1,3 @@
-import random
-
 
 # 1
 # def binary_search(num, num_list):
