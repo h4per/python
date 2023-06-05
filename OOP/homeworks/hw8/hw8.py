@@ -103,5 +103,5 @@ if connection:
     # delete_product(connection, 11)
     # select_all_product(connection)
     # select_cheap(connection)
-    # search_product(connection, "П")
+    search_product(connection, "П")
 
