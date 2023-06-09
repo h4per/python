@@ -31,14 +31,6 @@ async def num(message:types.Message):
     else:
         await message.reply("Блииин,попробуйте еще раз")
 
-@dp.message_handler(text='Скажи что-нибудь')
-async def say(message:types.Message):
-    await message.reply("ихихиха")
-
-@dp.message_handler(text='Кинь кубик')
-async def testing(message:types.Message):
-    await message.answer_dice()
-
 @dp.message_handler()
 async def not_found(message:types.Message):
     await message.reply("Я вас не понял, введите /help")
