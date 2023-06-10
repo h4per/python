@@ -1,9 +1,11 @@
 from aiogram import Bot, Dispatcher, types, executor
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from config import token
+import logging
 
 bot = Bot(token)
 dp = Dispatcher(bot)
+logging.basicConfig(level=logging.INFO)
 
 keyboard_buttons = [
     KeyboardButton('/start'),
