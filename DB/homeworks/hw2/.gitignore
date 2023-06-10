@@ -4,3 +4,4 @@ config.py
 .env
 .venv2
 __pycache__/
+requirements.txt
