@@ -5,5 +5,3 @@ config.py
 .venv2
 __pycache__/
 requirements.txt
-.gitignore
-users.db
