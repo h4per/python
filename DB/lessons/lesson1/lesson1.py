@@ -99,6 +99,7 @@ keyboard_buttons = [
 ]
 keyboard_one = ReplyKeyboardMarkup(resize_keyboard=True).add(*keyboard_buttons)
 
+
 @dp.message_handler(commands='start')
 async def start(message:types.Message):
     cursor.execute(f"SELECT * FROM users WHERE user_id = {message.from_user.id};")

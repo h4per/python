@@ -6,3 +6,6 @@ config.py
 __pycache__/
 requirements.txt
 .gitignore
+users.db
+yt_bot_lesson3.py
+yt_downloader_lesson3.py
