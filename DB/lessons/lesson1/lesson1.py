@@ -64,8 +64,6 @@
 
 # файл с дз 1 и уроком 1,2
 
-
-
 from aiogram import Bot, Dispatcher, types, executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -95,7 +93,7 @@ cursor.connection.commit()
 keyboard_buttons = [
     KeyboardButton('/start'),
     KeyboardButton('/mailing'),
-    KeyboardButton('/help')
+    KeyboardButton('/help'),
 ]
 keyboard_one = ReplyKeyboardMarkup(resize_keyboard=True).add(*keyboard_buttons)
 
@@ -112,7 +110,7 @@ async def start(message:types.Message):
                     '{time.ctime()}');
                     """)
     cursor.connection.commit()
-    await message.answer(f"Привет {message.from_user.full_name}!", reply_markup= keyboard_one)
+    await message.answer(f"Привет,{message.from_user.full_name}!", reply_markup= keyboard_one)
 
 @dp.message_handler(commands='help')
 async def help(message:types.Message):
@@ -120,7 +118,7 @@ async def help(message:types.Message):
 
 @dp.message_handler(text="Привет")
 async def hello(message:types.Message):
-    await message.reply("Приветик")
+    await message.reply("Здарова")
 
 class MailingState(StatesGroup):
     text = State()
