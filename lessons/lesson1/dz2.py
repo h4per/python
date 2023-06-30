@@ -27,6 +27,9 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users(
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     email VARCHAR(200),
+    message BOOLEAN,
+    video BOOLEAN,
+    audio BOOLEAN,
     created VARCHAR(200)
 );
 """)
@@ -63,10 +66,13 @@ async def start(message:types.Message):
     result = cursor.fetchall()
     if result == []:
         cursor.execute(f"""INSERT INTO users (user_id, username, first_name,
-                    last_name, created) VALUES ({message.from_user.id},
+                    last_name, message, video, audio, created) VALUES ({message.from_user.id},
                     '{message.from_user.username}',
                     '{message.from_user.first_name}', 
                     '{message.from_user.last_name}',
+                    False,
+                    False,
+                    False,
                     '{time.ctime()}');
                     """)
     cursor.connection.commit()
@@ -83,10 +89,9 @@ async def send_command(message:types.Message):
 async def get_subject(message:types.Message, state: FSMContext):
     await state.update_data(email=message.text)
     data = await state.get_data()
-
-    cursor.execute("""UPDATE users SET email=? WHERE user_id=?""", (data['email'], message.from_user.id))
+    user_email = data['email']
+    cursor.execute(f"UPDATE users SET email = '{user_email}', message = True WHERE user_id = {message.from_user.id};")
     cursor.connection.commit()
-
     await message.answer('Введите заголовок:')
     await EmailState.subject.set()
 
@@ -143,6 +148,10 @@ async def send_command2(message:types.Message):
 @dp.message_handler(state=VideoState.to_email)
 async def get_subject(message:types.Message, state: FSMContext):
     await state.update_data(email=message.text)
+    data = await state.get_data()
+    user_email = data['email']
+    cursor.execute(f"UPDATE users SET email = '{user_email}', video = True WHERE user_id = {message.from_user.id};")
+    cursor.connection.commit()
     await message.answer('Введите заголовок:')
     await VideoState.subject.set()
 
@@ -231,6 +240,10 @@ async def send_command3(message:types.Message):
 @dp.message_handler(state=AudioState.to_email)
 async def get_subject(message:types.Message, state: FSMContext):
     await state.update_data(email=message.text)
+    data = await state.get_data()
+    user_email = data['email']
+    cursor.execute(f"UPDATE users SET email = '{user_email}', audio = True WHERE user_id = {message.from_user.id};")
+    cursor.connection.commit()
     await message.answer('Введите заголовок:')
     await AudioState.subject.set()
 
