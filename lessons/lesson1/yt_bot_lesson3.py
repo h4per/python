@@ -201,6 +201,7 @@ async def all_inline(call):
         await bot.send_message(call.message.chat.id, 'Отправьте ссылку на видео для получения информации')
         await InfoState.url.set()
 
+
 @dp.message_handler(state=InfoState.url)
 async def get_info(message:types.Message, state:FSMContext):
     yt = YouTube(message.text, use_oauth=True)
@@ -247,7 +248,6 @@ async def download_video(message:types.Message, state:FSMContext):
     await state.finish()
 
 
-
 @dp.message_handler(commands='start')
 async def start(message:types.Message):
     cursor.execute(f"SELECT * FROM users WHERE user_id = {message.from_user.id};")
@@ -269,6 +269,7 @@ verify_buttons = [
 ]
 verify_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(*verify_buttons)
 
+
 @dp.message_handler(commands='verify')
 async def verify_user(message:types.Message):
     await message.answer('Для верификации отправьте свой номер телефона', reply_markup=verify_keyboard)
@@ -280,6 +281,7 @@ async def get_phone_number(messsage:types.Message):
                    WHERE user_id = {messsage.from_user.id};""")
     cursor.connection.commit()
     await messsage.answer("Ваш номер телефона успешно записан")
+
 
 format_buttons = [
     KeyboardButton('Mp3'),
@@ -315,6 +317,7 @@ async def download(message:types.Message, state:FSMContext):
             with open(f'audio/{yt.author}.mp3', 'rb') as audio:
                 await bot.send_audio(message.chat.id, audio)
             os.remove(f'audio/{yt.author}.mp3')
+            
     elif message.text == 'Mp4':
         await message.answer("Скачиваем видео...")
         try:

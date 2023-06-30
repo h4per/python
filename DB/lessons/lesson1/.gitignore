@@ -1,9 +1,0 @@
-__pycache__/
-users.db
-.gitignore
-requirements.txt
-venv2/
-env/
-config.py
-.env
-.venv2
