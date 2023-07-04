@@ -141,7 +141,7 @@ async def get_money(message: types.Message, state: FSMContext):
     
 
 
-@dp.message_handler(commands='KT')
+@dp.message_handler(commands='KZT')
 async def kzt(message: types.Message):
     await message.answer(f"На какую сумму вы хотите совершить обмен")
     await KztState.kzt.set()
