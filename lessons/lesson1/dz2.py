@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 database = sqlite3.connect('smtp2.db')
 cursor = database.cursor()
 cursor.execute("""CREATE TABLE IF NOT EXISTS users(
-    user_id INT,
+    user_id INT PRIMARY KEY,
     username VARCHAR(255),
     first_name VARCHAR(255),
     last_name VARCHAR(255),
